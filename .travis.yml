@@ -11,3 +11,6 @@ git:
 
 script:
   - make lint test
+
+after_success:
+  - coveralls

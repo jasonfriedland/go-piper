@@ -3,10 +3,11 @@ package piper
 import (
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 )
 
-func Test_getStdIn(t *testing.T) {
+func Test_Read(t *testing.T) {
 	// Tests
 	tests := []struct {
 		name    string
@@ -15,9 +16,10 @@ func Test_getStdIn(t *testing.T) {
 		wantErr bool
 	}{
 		// Test cases
-		{"Pass stdin, simple case", "x", "x", false},
-		{"Pass stdin, multiple newlines", "x\n\nx\n", "x\n\nx", false},
-		{"No stdin, simple case", "", "", false},
+		{"Pass stdin, simple case", "x\n😀\nx", "x\n😀\nx", false},
+		{"Pass stdin, trailing newline", "x\n\nx\n", "x\n\nx", false},
+		{"Pass long stdin, err true", strings.Repeat("x", 10e5), "", true},
+		{"No stdin, empty case", "", "", false},
 		{"No stdin, multiple newlines", "\n\n\n\n", "", false},
 	}
 
